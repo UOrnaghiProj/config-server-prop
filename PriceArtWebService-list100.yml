@@ -1,14 +1,19 @@
 #Application Config
-applicazione:
+application:
   listino: 100
   sconto: 0
 
-
 spring:
+# ==============================================================
+# = Cloud Parameteres
+# ==============================================================
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
-
   datasource:
     initialization-mode: always
     password: 123_Stella
@@ -26,17 +31,9 @@ spring:
             non_contextual_creation: true
     show-sql: true
 
-  cloud:
-    loadbalancer:
-      ribbon:
-        enabled: false
-
-
-
-
 # ==============================================================
-# = Rabbit MQ
-# ==============================================================
+# = Proprietà RabbitMQ
+# ==============================================================      
   rabbitmq:
     host: 127.0.0.1
     port: 5672
@@ -44,13 +41,44 @@ spring:
     password: rabbitmq
 
 # ==============================================================
+# = Actuator Parameters
+# Metodo POST con url: /actuator/refresh
+# Metodo POST con url: /actuator/bus-refresh 
+# ==============================================================
+management:
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,refresh,bus-refresh,hystrix.stream
+# ==============================================================
+# = Actuator Info
+# ==============================================================
+info:
+  assistenza:
+    nome: "Umberto"
+  nome:
+    nome-app: "PriceArt Web Service"
+  profilo: "List100 Con Sconto"
+                
+# ==============================================================
+# = Livello Log di Sicurezza
+# ==============================================================  
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud: ERROR
+
+# ==============================================================
 # = Proprietà Servizio gestUser
-# ==============================================================          
+# ==============================================================           
 gestuser:
   password: password
   srvUrl: http://localhost:8019/api/utenti/cerca/userid/
   userId: ReadUser
-  
+
 # ==============================================================
 # = Parametri Sicurezza JWT 
 # ==============================================================
@@ -61,25 +89,4 @@ sicurezza:
     prefix: Bearer 
     expiration: 86400
     secret: 123_Stella
-    
-# ==============================================================
-# = ACTUATOR PARAMETERS
-# ==============================================================
-management:
-  endpoint:
-    health:
-      show-details: WHEN_AUTHORIZED
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,refresh,bus-refresh
-        
-# ==============================================================
-# = ACTUATOR INFO
-# ==============================================================
-info:
-  assistenza:
-    nome: "Umberto Ornaghi"
-    mail: "umberto.ornaghi@gmail.com"
-  nome:
-    nome-app: "priceArt web service con JWT"
+
