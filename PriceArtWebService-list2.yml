@@ -2,3 +2,81 @@
 applicazione:
   listino: 2
   sconto: 0
+
+
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+# ==============================================================
+# = Rabbit MQ
+# ==============================================================
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+    
+# ==============================================================
+# = Proprietà Fonte Dati PostgreSQL
+# ==============================================================
+  datasource:
+    initialization-mode: always
+    password: 123_Stella
+    platform: postgres
+    url: jdbc:postgresql://localhost:5433/Shop
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+
+
+# ==============================================================
+# = Proprietà Servizio gestUser
+# ==============================================================          
+gestuser:
+  password: password
+  srvUrl: http://localhost:8019/api/utenti/cerca/userid/
+  userId: ReadUser
+  
+# ==============================================================
+# = Parametri Sicurezza JWT 
+# ==============================================================
+sicurezza:
+    uri: /auth
+    refresh: /refresh
+    header: Authorization
+    prefix: Bearer 
+    expiration: 86400
+    secret: 123_Stella
+    
+# ==============================================================
+# = ACTUATOR PARAMETERS
+# ==============================================================
+management:
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,refresh,bus-refresh
+        
+# ==============================================================
+# = ACTUATOR INFO
+# ==============================================================
+info:
+  assistenza:
+    nome: "Umberto Ornaghi"
+    mail: "umberto.ornaghi@gmail.com"
+  nome:
+    nome-app: "priceArt web service con JWT"
